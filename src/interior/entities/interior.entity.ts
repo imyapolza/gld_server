@@ -1,18 +1,18 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+// import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
-interface Characterisctic {
-  name: string;
-  value: string;
-}
+// interface Characterisctic {
+//   name: string;
+//   value: string;
+// }
 
-@Entity()
-export class Interior {
-  @PrimaryGeneratedColumn()
-  id: number;
+// @Entity()
+// export class Interior {
+//   @PrimaryGeneratedColumn()
+//   id: number;
 
-  @Column('text', { array: true })
-  characterisctics: Array<Characterisctic>;
+//   @Column('text', { array: true })
+//   characterisctics: Array<Characterisctic>;
 
-  @Column()
-  lastName: string;
-}
+//   @Column()
+//   lastName: string;
+// }

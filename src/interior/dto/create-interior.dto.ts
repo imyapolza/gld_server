@@ -4,7 +4,7 @@ interface Characterisctic {
 }
 
 export class CreateInteriorDto {
-  name: string;
-  characterisctics: Array<Characterisctic>;
-  image: Blob;
+  // name: string;
+  // characterisctics: Array<Characterisctic>;
+  value: Blob;
 }

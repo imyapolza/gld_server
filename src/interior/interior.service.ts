@@ -4,8 +4,8 @@ import { UpdateInteriorDto } from './dto/update-interior.dto';
 
 @Injectable()
 export class InteriorService {
-  create(createInteriorDto: CreateInteriorDto) {
-    return 'This action adds a new interior';
+  create() {
+    return 's';
   }
 
   findAll() {
