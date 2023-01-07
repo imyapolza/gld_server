@@ -5,19 +5,19 @@ import { AppService } from './app.service';
 import { InteriorModule } from './interior/interior.module';
 
 @Module({
-  imports: [
-    InteriorModule,
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: '12345',
-      database: 'gld',
-      entities: [],
-      synchronize: true,
-    }),
-  ],
+  // imports: [
+  //   InteriorModule,
+  //   TypeOrmModule.forRoot({
+  //     type: 'postgres',
+  //     host: 'localhost',
+  //     port: 5432,
+  //     username: 'postgres',
+  //     password: '12345',
+  //     database: 'gld',
+  //     entities: [],
+  //     synchronize: true,
+  //   }),
+  // ],
   controllers: [AppController],
   providers: [AppService],
 })
