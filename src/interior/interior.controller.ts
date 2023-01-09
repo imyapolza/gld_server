@@ -8,46 +8,37 @@ import {
   Delete,
   UseInterceptors,
   UploadedFile,
-  Req,
+  Res,
 } from '@nestjs/common';
 import { InteriorService } from './interior.service';
 import { CreateInteriorDto } from './dto/create-interior.dto';
 import { UpdateInteriorDto } from './dto/update-interior.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Express } from 'express';
-import { SampleDto } from './dto/sample.dto';
+
+import { FileService, FileType } from 'src/file/file.service';
 
 @Controller('interior')
 export class InteriorController {
-  constructor(private readonly interiorService: InteriorService) {}
+  constructor(
+    private readonly interiorService: InteriorService,
+    private fileServise: FileService,
+  ) {}
 
-  // @UseInterceptors(FileInterceptor('file'))
-  // @Post('file')
-  // uploadFile(@Body() body: any, @UploadedFile() file: Express.Multer.File) {
-  //   console.log('body', body);
-  //   return {
-  //     body,
-  //     file: file.buffer.toString(),
-  //   };
-  // }
-
-  // @Post()
-  // @UseInterceptors(FileInterceptor('file'))
-  // create(@Req() req: any) {
-  //   console.log('req', req);
-  // }
-
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('file', {}))
   @Post('file')
   uploadFile(
-    @Body() body: SampleDto,
+    @Body() body: CreateInteriorDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    console.log('file', file);
-    return {
-      body,
-      file: file.buffer.toString(),
-    };
+    const picturePath = this.fileServise.createFile(FileType.INTERIOR, file);
+
+    this.interiorService.create({
+      picturePath,
+      name: body.name,
+      characteristics: body.characteristics,
+      price: body.price,
+    });
   }
 
   @Get()

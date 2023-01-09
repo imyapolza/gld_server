@@ -1,18 +1,20 @@
-// import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { IsNotEmpty } from 'class-validator';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
-// interface Characterisctic {
-//   name: string;
-//   value: string;
-// }
+@Entity()
+export class Interior {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-// @Entity()
-// export class Interior {
-//   @PrimaryGeneratedColumn()
-//   id: number;
+  @Column()
+  name: string;
 
-//   @Column('text', { array: true })
-//   characterisctics: Array<Characterisctic>;
+  @Column()
+  price: number;
 
-//   @Column()
-//   lastName: string;
-// }
+  @Column('jsonb', {nullable: true})
+  characteristics: object[];
+
+  @Column()
+  picturePath: string;
+}

@@ -1,15 +1,35 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateInteriorDto } from './dto/create-interior.dto';
 import { UpdateInteriorDto } from './dto/update-interior.dto';
+import { Interior } from './entities/interior.entity';
 
 @Injectable()
 export class InteriorService {
-  create() {
-    return 's';
+  constructor(
+    @InjectRepository(Interior)
+    private repository: Repository<Interior>,
+  ) {}
+
+  async create({
+    name,
+    characteristics,
+    picturePath,
+    price,
+  }: CreateInteriorDto) {
+    await this.repository.save({
+      picturePath,
+      name,
+      price,
+      characteristics,
+    });
   }
 
-  findAll() {
-    return `This action returns all interior`;
+  async findAll() {
+    const arr = await this.repository.createQueryBuilder('u').getMany();
+
+    return arr;
   }
 
   findOne(id: number) {
