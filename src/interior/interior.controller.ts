@@ -33,7 +33,7 @@ export class InteriorController {
   ) {
     const picturePath = this.fileServise.createFile(FileType.INTERIOR, file);
 
-    this.interiorService.create({
+    return this.interiorService.create({
       picturePath,
       name: body.name,
       characteristics: body.characteristics,

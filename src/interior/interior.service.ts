@@ -24,6 +24,8 @@ export class InteriorService {
       price,
       characteristics,
     });
+
+    return this.findAll();
   }
 
   async findAll() {

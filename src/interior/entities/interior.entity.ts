@@ -12,7 +12,7 @@ export class Interior {
   @Column()
   price: number;
 
-  @Column('jsonb', {nullable: true})
+  @Column('jsonb', { nullable: true })
   characteristics: object[];
 
   @Column()
