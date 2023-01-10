@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateInteriorDto } from './dto/create-interior.dto';
@@ -18,6 +18,7 @@ export class InteriorService {
     picturePath,
     price,
   }: CreateInteriorDto) {
+    console.log('characteristicscharacteristics', characteristics);
     await this.repository.save({
       picturePath,
       name,
@@ -34,15 +35,28 @@ export class InteriorService {
     return arr;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} interior`;
+  async findOne(id: number) {
+    const interior = await this.repository
+      .createQueryBuilder('u')
+      .where('u.id = :id', { id })
+      .getOne();
+
+    return interior;
   }
 
   update(id: number, updateInteriorDto: UpdateInteriorDto) {
     return `This action updates a #${id} interior`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} interior`;
+  async remove(id: number) {
+    const find = await this.repository.findOne({ where: { id: id } });
+
+    if (!find) {
+      throw new NotFoundException('Карточка не найдена');
+    }
+
+    await this.repository.delete(id);
+
+    return this.findAll();
   }
 }
