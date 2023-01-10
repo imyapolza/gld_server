@@ -9,29 +9,28 @@ import {
   UseInterceptors,
   UploadedFile,
 } from '@nestjs/common';
-import { InteriorService } from './interior.service';
-import { CreateInteriorDto } from './dto/create-interior.dto';
-import { UpdateInteriorDto } from './dto/update-interior.dto';
+import { EntranceService } from './entrance.service';
+import { CreateEntranceDto } from './dto/create-entrance.dto';
+import { UpdateEntranceDto } from './dto/update-entrance.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { Express } from 'express';
 import { FileService, FileType } from 'src/file/file.service';
 
-@Controller('interior')
-export class InteriorController {
+@Controller('entrance')
+export class EntranceController {
   constructor(
-    private readonly interiorService: InteriorService,
+    private readonly entranceService: EntranceService,
     private fileServise: FileService,
   ) {}
 
   @UseInterceptors(FileInterceptor('file', {}))
   @Post('file')
   uploadFile(
-    @Body() body: CreateInteriorDto,
+    @Body() body: CreateEntranceDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    const picturePath = this.fileServise.createFile(FileType.INTERIOR, file);
+    const picturePath = this.fileServise.createFile(FileType.ENTRANCE, file);
 
-    return this.interiorService.create({
+    return this.entranceService.create({
       picturePath,
       name: body.name,
       characteristics: body.characteristics,
@@ -41,24 +40,24 @@ export class InteriorController {
 
   @Get()
   findAll() {
-    return this.interiorService.findAll();
+    return this.entranceService.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.interiorService.findOne(+id);
+    return this.entranceService.findOne(+id);
   }
 
   @Patch(':id')
   update(
     @Param('id') id: string,
-    @Body() updateInteriorDto: UpdateInteriorDto,
+    @Body() updateEntranceDto: UpdateEntranceDto,
   ) {
-    return this.interiorService.update(+id, updateInteriorDto);
+    return this.entranceService.update(+id, updateEntranceDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.interiorService.remove(+id);
+    return this.entranceService.remove(+id);
   }
 }

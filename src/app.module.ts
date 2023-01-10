@@ -6,6 +6,8 @@ import { AppService } from './app.service';
 import { InteriorModule } from './interior/interior.module';
 import * as path from 'path';
 import { Interior } from './interior/entities/interior.entity';
+import { EntranceModule } from './entrance/entrance.module';
+import { Entrance } from './entrance/entities/entrance.entity';
 
 @Module({
   imports: [
@@ -20,9 +22,10 @@ import { Interior } from './interior/entities/interior.entity';
       username: 'postgres',
       password: '12345',
       database: 'gld',
-      entities: [Interior],
+      entities: [Interior, Entrance],
       synchronize: true,
     }),
+    EntranceModule,
   ],
   controllers: [AppController],
   providers: [AppService],

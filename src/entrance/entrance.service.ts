@@ -1,15 +1,15 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateInteriorDto } from './dto/create-interior.dto';
-import { UpdateInteriorDto } from './dto/update-interior.dto';
-import { Interior } from './entities/interior.entity';
+import { CreateEntranceDto } from './dto/create-entrance.dto';
+import { UpdateEntranceDto } from './dto/update-entrance.dto';
+import { Entrance } from './entities/entrance.entity';
 
 @Injectable()
-export class InteriorService {
+export class EntranceService {
   constructor(
-    @InjectRepository(Interior)
-    private repository: Repository<Interior>,
+    @InjectRepository(Entrance)
+    private repository: Repository<Entrance>,
   ) {}
 
   async create({
@@ -17,7 +17,7 @@ export class InteriorService {
     characteristics,
     picturePath,
     price,
-  }: CreateInteriorDto) {
+  }: CreateEntranceDto) {
     await this.repository.save({
       picturePath,
       name,
@@ -43,15 +43,15 @@ export class InteriorService {
     return interior;
   }
 
-  update(id: number, updateInteriorDto: UpdateInteriorDto) {
-    return `This action updates a #${id} interior`;
+  update(id: number, updateEntranceDto: UpdateEntranceDto) {
+    return `This action updates a #${id} entrance`;
   }
 
   async remove(id: number) {
     const find = await this.repository.findOne({ where: { id: id } });
 
     if (!find) {
-      throw new NotFoundException('Межкомнатная дверь не найдена');
+      throw new NotFoundException('Входная дверь не найдена');
     }
 
     await this.repository.delete(id);
