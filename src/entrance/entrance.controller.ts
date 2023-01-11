@@ -14,6 +14,7 @@ import { CreateEntranceDto } from './dto/create-entrance.dto';
 import { UpdateEntranceDto } from './dto/update-entrance.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FileService, FileType } from 'src/file/file.service';
+import { UpdatePriceEntranceDto } from './dto/updatePrice-entrance.dto';
 
 @Controller('entrance')
 export class EntranceController {
@@ -49,11 +50,16 @@ export class EntranceController {
   }
 
   @Patch(':id')
-  update(
+  update(@Param('id') id: string, @Body() updatePostDto: UpdateEntranceDto) {
+    return this.entranceService.update(+id, updatePostDto);
+  }
+
+  @Patch('price/:id')
+  updatePrice(
     @Param('id') id: string,
-    @Body() updateEntranceDto: UpdateEntranceDto,
+    @Body() updatePriceDto: UpdatePriceEntranceDto,
   ) {
-    return this.entranceService.update(+id, updateEntranceDto);
+    return this.entranceService.updatePrice(+id, updatePriceDto);
   }
 
   @Delete(':id')

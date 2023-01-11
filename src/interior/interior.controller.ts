@@ -15,6 +15,7 @@ import { UpdateInteriorDto } from './dto/update-interior.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Express } from 'express';
 import { FileService, FileType } from 'src/file/file.service';
+import { UpdatePriceInteriorDto } from './dto/updatePrice-interior.dto';
 
 @Controller('interior')
 export class InteriorController {
@@ -50,11 +51,16 @@ export class InteriorController {
   }
 
   @Patch(':id')
-  update(
+  update(@Param('id') id: string, @Body() updatePostDto: UpdateInteriorDto) {
+    return this.interiorService.update(+id, updatePostDto);
+  }
+
+  @Patch('price/:id')
+  updatePrice(
     @Param('id') id: string,
-    @Body() updateInteriorDto: UpdateInteriorDto,
+    @Body() updatePriceDto: UpdatePriceInteriorDto,
   ) {
-    return this.interiorService.update(+id, updateInteriorDto);
+    return this.interiorService.updatePrice(+id, updatePriceDto);
   }
 
   @Delete(':id')

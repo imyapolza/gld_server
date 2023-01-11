@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateEntranceDto } from './dto/create-entrance.dto';
 import { UpdateEntranceDto } from './dto/update-entrance.dto';
+import { UpdatePriceEntranceDto } from './dto/updatePrice-entrance.dto';
 import { Entrance } from './entities/entrance.entity';
 
 @Injectable()
@@ -43,8 +44,35 @@ export class EntranceService {
     return interior;
   }
 
-  update(id: number, updateEntranceDto: UpdateEntranceDto) {
-    return `This action updates a #${id} entrance`;
+  async update(id: number, dto: UpdateEntranceDto) {
+    const find = await this.repository.findOne({ where: { id: id } });
+
+    if (!find) {
+      throw new NotFoundException('Межкомнатная дверь не найдена');
+    }
+
+    await this.repository.update(id, {
+      picturePath: dto.picturePath,
+      name: dto.name,
+      price: dto.price,
+      characteristics: dto.characteristics,
+    });
+
+    return dto;
+  }
+
+  async updatePrice(id: number, dto: UpdatePriceEntranceDto) {
+    const find = await this.repository.findOne({ where: { id: id } });
+
+    if (!find) {
+      throw new NotFoundException('Межкомнатная дверь не найдена');
+    }
+
+    await this.repository.update(id, {
+      price: dto.price,
+    });
+
+    return dto.price;
   }
 
   async remove(id: number) {
