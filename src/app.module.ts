@@ -8,6 +8,8 @@ import * as path from 'path';
 import { Interior } from './interior/entities/interior.entity';
 import { EntranceModule } from './entrance/entrance.module';
 import { Entrance } from './entrance/entities/entrance.entity';
+import { HomeModule } from './home/home.module';
+import { Home } from './home/entities/home.entity';
 
 @Module({
   imports: [
@@ -22,10 +24,11 @@ import { Entrance } from './entrance/entities/entrance.entity';
       username: 'postgres',
       password: '12345',
       database: 'gld',
-      entities: [Interior, Entrance],
+      entities: [Interior, Entrance, Home],
       synchronize: true,
     }),
     EntranceModule,
+    HomeModule,
   ],
   controllers: [AppController],
   providers: [AppService],
