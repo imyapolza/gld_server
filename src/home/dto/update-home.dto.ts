@@ -3,5 +3,5 @@ import { CreateHomeDto } from './create-home.dto';
 
 export class UpdateHomeDto extends PartialType(CreateHomeDto) {
   address: string;
-  number: number;
+  number: string;
 }

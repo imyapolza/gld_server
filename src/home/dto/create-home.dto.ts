@@ -7,5 +7,5 @@ export class CreateHomeDto {
   address: string;
 
   @IsNotEmpty()
-  number: number;
+  number: string;
 }

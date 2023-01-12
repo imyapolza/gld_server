@@ -9,5 +9,5 @@ export class Home {
   address: string;
 
   @Column()
-  number: number;
+  number: string;
 }
