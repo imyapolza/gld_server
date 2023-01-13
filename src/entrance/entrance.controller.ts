@@ -8,6 +8,7 @@ import {
   Delete,
   UseInterceptors,
   UploadedFile,
+  Query,
 } from '@nestjs/common';
 import { EntranceService } from './entrance.service';
 import { CreateEntranceDto } from './dto/create-entrance.dto';
@@ -28,6 +29,7 @@ export class EntranceController {
   uploadFile(
     @Body() body: CreateEntranceDto,
     @UploadedFile() file: Express.Multer.File,
+    @Query() query,
   ) {
     const picturePath = this.fileServise.createFile(FileType.ENTRANCE, file);
 
@@ -36,12 +38,16 @@ export class EntranceController {
       name: body.name,
       characteristics: body.characteristics,
       price: body.price,
+      query,
     });
   }
 
   @Get()
-  findAll() {
-    return this.entranceService.findAll();
+  async findAll(@Query() query) {
+    return await this.entranceService.findAll({
+      limit: query.hasOwnProperty('limit') ? query.limit : 8,
+      page: query.hasOwnProperty('page') ? query.page : 0,
+    });
   }
 
   @Get(':id')
@@ -63,7 +69,7 @@ export class EntranceController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.entranceService.remove(+id);
+  remove(@Param('id') id: string, @Query() query) {
+    return this.entranceService.remove({ id: +id, query });
   }
 }

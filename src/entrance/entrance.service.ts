@@ -18,6 +18,7 @@ export class EntranceService {
     characteristics,
     picturePath,
     price,
+    query,
   }: CreateEntranceDto) {
     await this.repository.save({
       picturePath,
@@ -26,13 +27,19 @@ export class EntranceService {
       characteristics,
     });
 
-    return this.findAll();
+    return this.findAll(query);
   }
 
-  async findAll() {
-    const arr = await this.repository.createQueryBuilder('u').getMany();
+  async findAll(options) {
+    const [results, total] = await this.repository.findAndCount({
+      take: options.limit,
+      skip: options.page,
+    });
 
-    return arr;
+    return {
+      results,
+      total,
+    };
   }
 
   async findOne(id: number) {
@@ -75,7 +82,7 @@ export class EntranceService {
     return dto.price;
   }
 
-  async remove(id: number) {
+  async remove({ id, query }) {
     const find = await this.repository.findOne({ where: { id: id } });
 
     if (!find) {
@@ -84,6 +91,6 @@ export class EntranceService {
 
     await this.repository.delete(id);
 
-    return this.findAll();
+    return this.findAll(query);
   }
 }

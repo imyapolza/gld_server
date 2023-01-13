@@ -8,6 +8,7 @@ import {
   Delete,
   UseInterceptors,
   UploadedFile,
+  Query,
 } from '@nestjs/common';
 import { InteriorService } from './interior.service';
 import { CreateInteriorDto } from './dto/create-interior.dto';
@@ -29,6 +30,7 @@ export class InteriorController {
   uploadFile(
     @Body() body: CreateInteriorDto,
     @UploadedFile() file: Express.Multer.File,
+    @Query() query,
   ) {
     const picturePath = this.fileServise.createFile(FileType.INTERIOR, file);
 
@@ -37,12 +39,16 @@ export class InteriorController {
       name: body.name,
       characteristics: body.characteristics,
       price: body.price,
+      query,
     });
   }
 
   @Get()
-  findAll() {
-    return this.interiorService.findAll();
+  async findAll(@Query() query) {
+    return await this.interiorService.findAll({
+      limit: query.hasOwnProperty('limit') ? query.limit : 8,
+      page: query.hasOwnProperty('page') ? query.page : 0,
+    });
   }
 
   @Get(':id')
@@ -64,7 +70,7 @@ export class InteriorController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.interiorService.remove(+id);
+  remove(@Param('id') id: string, @Query() query) {
+    return this.interiorService.remove({ id: +id, query });
   }
 }

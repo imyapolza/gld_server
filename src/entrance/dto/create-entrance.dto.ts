@@ -1,4 +1,4 @@
-import { IsNotEmpty } from "class-validator";
+import { IsNotEmpty } from 'class-validator';
 
 export class CreateEntranceDto {
   @IsNotEmpty()
@@ -9,6 +9,8 @@ export class CreateEntranceDto {
   price: number;
 
   picturePath: string;
+
+  query: ParameterDecorator;
 
   @IsNotEmpty()
   characteristics: Array<Characterisctic>;
