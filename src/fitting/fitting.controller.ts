@@ -11,33 +11,32 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { InteriorService } from './interior.service';
-import { CreateInteriorDto } from './dto/create-interior.dto';
-import { UpdateInteriorDto } from './dto/update-interior.dto';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { Express } from 'express';
+import { FittingService } from './fitting.service';
+import { CreateFittingDto } from './dto/create-fitting.dto';
+import { UpdateFittingDto } from './dto/update-fitting.dto';
 import { FileService, FileType } from 'src/file/file.service';
-import { UpdatePriceInteriorDto } from './dto/updatePrice-interior.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { UpdatePriceFittingDto } from './dto/updatePrice-fitting.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
-@Controller('interior')
-export class InteriorController {
+@Controller('fitting')
+export class FittingController {
   constructor(
-    private readonly interiorService: InteriorService,
+    private readonly archesService: FittingService,
     private fileServise: FileService,
   ) {}
-
+  
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('file', {}))
   @Post('file')
   uploadFile(
-    @Body() body: CreateInteriorDto,
+    @Body() body: CreateFittingDto,
     @UploadedFile() file: Express.Multer.File,
     @Query() query,
   ) {
-    const picturePath = this.fileServise.createFile(FileType.INTERIOR, file);
+    const picturePath = this.fileServise.createFile(FileType.ENTRANCE, file);
 
-    return this.interiorService.create({
+    return this.archesService.create({
       picturePath,
       name: body.name,
       characteristics: body.characteristics,
@@ -48,7 +47,7 @@ export class InteriorController {
 
   @Get()
   async findAll(@Query() query) {
-    return await this.interiorService.findAll({
+    return await this.archesService.findAll({
       limit: query.hasOwnProperty('limit') ? query.limit : 8,
       page: query.hasOwnProperty('page') ? query.page : 0,
     });
@@ -56,26 +55,27 @@ export class InteriorController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.interiorService.findOne(+id);
+    return this.archesService.findOne(+id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePostDto: UpdateInteriorDto) {
-    return this.interiorService.update(+id, updatePostDto);
+  update(@Param('id') id: string, @Body() updatePostDto: UpdateFittingDto) {
+    return this.archesService.update(+id, updatePostDto);
   }
 
   @UseGuards(JwtAuthGuard)
   @Patch('price/:id')
   updatePrice(
     @Param('id') id: string,
-    @Body() updatePriceDto: UpdatePriceInteriorDto,
+    @Body() updatePriceDto: UpdatePriceFittingDto,
   ) {
-    return this.interiorService.updatePrice(+id, updatePriceDto);
+    return this.archesService.updatePrice(+id, updatePriceDto);
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string, @Query() query) {
-    return this.interiorService.remove({ id: +id, query });
+    return this.archesService.remove({ id: +id, query });
   }
 }

@@ -9,6 +9,7 @@ import {
   UseInterceptors,
   UploadedFile,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { EntranceService } from './entrance.service';
 import { CreateEntranceDto } from './dto/create-entrance.dto';
@@ -16,6 +17,7 @@ import { UpdateEntranceDto } from './dto/update-entrance.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FileService, FileType } from 'src/file/file.service';
 import { UpdatePriceEntranceDto } from './dto/updatePrice-entrance.dto';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @Controller('entrance')
 export class EntranceController {
@@ -24,6 +26,7 @@ export class EntranceController {
     private fileServise: FileService,
   ) {}
 
+  @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('file', {}))
   @Post('file')
   uploadFile(
@@ -55,11 +58,13 @@ export class EntranceController {
     return this.entranceService.findOne(+id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updatePostDto: UpdateEntranceDto) {
     return this.entranceService.update(+id, updatePostDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch('price/:id')
   updatePrice(
     @Param('id') id: string,
@@ -68,6 +73,7 @@ export class EntranceController {
     return this.entranceService.updatePrice(+id, updatePriceDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string, @Query() query) {
     return this.entranceService.remove({ id: +id, query });
