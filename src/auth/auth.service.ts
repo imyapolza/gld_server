@@ -1,8 +1,14 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserEntity } from 'src/user/entities/user.entity';
 import { Response } from 'express';
 import { UserService } from 'src/user/user.service';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -11,15 +17,20 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async validateUser(email: string, password: string): Promise<any> {
-    const user = await this.userService.findByCond({ email, password });
+  async validateUser(email: string, password: string) {
+    const user = await this.userService.findByCond({ email });
 
-    if (user && user.password === password) {
+    const isPasswordMatching = await bcrypt.compare(password, user.password);
+
+    if (user && isPasswordMatching) {
       const { password, ...result } = user;
       return result;
+    } else {
+      throw new HttpException(
+        'Неверная почта или пароль',
+        HttpStatus.BAD_REQUEST,
+      );
     }
-
-    return null;
   }
 
   generateJwtToken(data: { id: number; email: string }) {
@@ -28,11 +39,11 @@ export class AuthService {
     return this.jwtService.sign(payload);
   }
 
-
   setAccessToken(user: UserEntity, res: Response) {
     res.cookie('accessToken', this.generateJwtToken(user), {
-      expires: new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 360),
+      expires: new Date(new Date().getTime() + 720 * 60 * 1000),
       sameSite: 'strict',
+      httpOnly: true,
     });
   }
 
