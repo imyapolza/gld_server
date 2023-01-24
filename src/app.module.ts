@@ -17,7 +17,6 @@ import { Arches } from './arch/entities/arch.entity';
 import { Fitting } from './fitting/entities/fitting.entity';
 import { BathThings } from './bath-things/entities/bath-things.entity';
 import { UserEntity } from './user/entities/user.entity';
-import { LocalAuthGuard } from './auth/guards/local-auth.guard';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { JwtStrategy } from './auth/strategies/jwt.strategy';
