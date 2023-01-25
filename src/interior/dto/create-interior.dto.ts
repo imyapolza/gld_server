@@ -10,7 +10,7 @@ export class CreateInteriorDto {
 
   picturePath: string;
 
-  query: ParameterDecorator;
+  query: { page: string; limit: string };
 
   @IsNotEmpty()
   characteristics: Array<Characterisctic>;
