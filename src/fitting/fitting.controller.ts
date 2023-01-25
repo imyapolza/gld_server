@@ -34,7 +34,7 @@ export class FittingController {
     @UploadedFile() file: Express.Multer.File,
     @Query() query,
   ) {
-    const picturePath = this.fileServise.createFile(FileType.ENTRANCE, file);
+    const picturePath = this.fileServise.createFile(FileType.FITTING, file);
 
     return this.archesService.create({
       picturePath,

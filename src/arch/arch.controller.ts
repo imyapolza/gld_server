@@ -34,7 +34,7 @@ export class ArchesController {
     @UploadedFile() file: Express.Multer.File,
     @Query() query,
   ) {
-    const picturePath = this.fileServise.createFile(FileType.ENTRANCE, file);
+    const picturePath = this.fileServise.createFile(FileType.ARCH, file);
 
     return this.archesService.create({
       picturePath,

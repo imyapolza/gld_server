@@ -6,8 +6,9 @@ import * as uuid from 'uuid';
 export enum FileType {
   INTERIOR = 'interiorImages',
   ENTRANCE = 'entranceImages',
-  ABOUT = 'aboutImages',
-  CONTACTS = 'contactsImages',
+  ARCH = 'archImages',
+  BATH_THINGS = 'bathThingsImages',
+  FITTING = 'fittingImages',
 }
 
 @Injectable()

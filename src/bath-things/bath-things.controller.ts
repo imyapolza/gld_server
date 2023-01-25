@@ -34,7 +34,7 @@ export class BathThingsController {
     @UploadedFile() file: Express.Multer.File,
     @Query() query,
   ) {
-    const picturePath = this.fileServise.createFile(FileType.ENTRANCE, file);
+    const picturePath = this.fileServise.createFile(FileType.BATH_THINGS, file);
 
     return this.bathThingsService.create({
       picturePath,
