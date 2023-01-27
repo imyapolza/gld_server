@@ -16,11 +16,16 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe());
 
-  app.enableCors({
+  const options = {
     origin: '*',
-    methods: 'GET, PUT, POST, DELETE',
-    allowedHeaders: 'Content-Type, Authorization',
-  });
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+    credentials: true,
+    allowedHeaders: 'Content-Type, Accept',
+  };
+
+  app.enableCors(options);
 
   await app.listen(port || 8000, () => {
     console.log(`App started on port: ${port || 8000}`);
